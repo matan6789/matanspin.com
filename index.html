@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+<meta charset="UTF-8">
+<title>Matan Spin</title>
+
+<style>
+body {
+  font-family: Arial;
+  text-align: center;
+  background: #111;
+  color: white;
+  margin: 0;
+}
+
+/* מסך פתיחה */
+#startScreen {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: #111;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+button, input {
+  padding: 10px;
+  margin: 5px;
+  font-size: 16px;
+}
+
+/* חץ */
+#arrow {
+  width: 0;
+  height: 0;
+  margin: 10px auto -10px auto;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-bottom: 25px solid gold;
+}
+
+/* גלגל */
+#wheel {
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  margin: auto;
+  transition: transform 4s ease-out;
+}
+
+#namesList {
+  margin-top: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<div id="startScreen">
+  <h1>Matan Spin 🎡</h1>
+  <button onclick="start()">Enter</button>
+</div>
+
+<h2>גלגל מזל</h2>
+
+<input id="nameInput" placeholder="הכנס שם">
+<button onclick="addName()">הוסף</button>
+
+<div id="namesList"></div>
+
+<!-- 🔻 החץ כאן -->
+<div id="arrow"></div>
+
+<div id="wheel"></div>
+
+<button onclick="spin()">סובב גלגל</button>
+
+<script>
+let names = [];
+let spinning = false;
+let audioCtx;
+
+function start() {
+  document.getElementById("startScreen").style.display = "none";
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+}
+
+function playCasinoSound() {
+  if (!audioCtx) return;
+
+  let osc = audioCtx.createOscillator();
+  let gain = audioCtx.createGain();
+
+  osc.type = "sine";
+  osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+
+  gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+
+  osc.start();
+  osc.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 1.5);
+
+  setTimeout(() => osc.stop(), 1500);
+}
+
+function addName() {
+  let input = document.getElementById("nameInput");
+  if (input.value.trim() === "") return;
+
+  names.push(input.value.trim());
+  input.value = "";
+  updateWheel();
+}
+
+function updateWheel() {
+  if (names.length === 0) return;
+
+  let step = 360 / names.length;
+  let colors = [];
+
+  for (let i = 0; i < names.length; i++) {
+    let color = i % 2 === 0 ? "#ff4d4d" : "#4d79ff";
+    colors.push(`${color} ${i * step}deg ${(i + 1) * step}deg`);
+  }
+
+  document.getElementById("wheel").style.background =
+    `conic-gradient(${colors.join(",")})`;
+
+  document.getElementById("namesList").innerText =
+    "שמות: " + names.join(", ");
+}
+
+function spin() {
+  if (spinning || names.length === 0) return;
+  spinning = true;
+
+  playCasinoSound();
+
+  let wheel = document.getElementById("wheel");
+
+  let randomSpin = Math.floor(Math.random() * 360) + 1440;
+  wheel.style.transform = `rotate(${randomSpin}deg)`;
+
+  setTimeout(() => {
+    spinning = false;
+
+    let index = Math.floor(((randomSpin % 360) / 360) * names.length);
+    let result = names[index];
+
+    alert("🎉 יצא: " + result);
+  }, 4000);
+}
+</script>
+
+</body>
+</html>
