@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎰 Matan Spin 🎰</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    color:white;
+    min-height:100vh;
+    text-align:center;
+    background:linear-gradient(135deg,#000428,#004e92);
+}
+
+h1{
+    margin-top:15px;
+    font-size:55px;
+    color:gold;
+    text-shadow:0 0 20px gold;
+}
+
+#winner{
+    font-size:38px;
+    font-weight:bold;
+    color:gold;
+    min-height:55px;
+    margin-bottom:10px;
+    text-shadow:0 0 15px gold;
+}
+
+.main{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:40px;
+    padding:20px 50px;
+    flex-wrap:wrap;
+}
+
+.panel{
+    width:280px;
+    text-align:right;
+    background:rgba(0,0,0,0.35);
+    padding:15px;
+    border-radius:15px;
+    backdrop-filter:blur(5px);
+    order:2;
+}
+
+.panel h3{
+    text-align:center;
+    margin-top:0;
+}
+
+textarea{
+    width:100%;
+    height:120px;
+    border:none;
+    border-radius:12px;
+    padding:10px;
+    font-size:16px;
+    resize:none;
+}
+
+input[type="number"]{
+    width:100%;
+    padding:10px;
+    border:none;
+    border-radius:10px;
+    font-size:16px;
+}
+
+input[type="color"]{
+    width:100%;
+    height:45px;
+    border:none;
+}
+
+input[type="file"]{
+    width:100%;
+}
+
+.wheel-area{
+    flex:1;
+    order:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+
+.wheel-wrapper{
+    position:relative;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+#pointer{
+    position:absolute;
+    right:-45px;
+    top:50%;
+    transform:translateY(-50%);
+    font-size:70px;
+    color:gold;
+    text-shadow:0 0 15px gold;
+    z-index:999;
+}
+
+#wheel{
+    cursor:pointer;
+}
+
+.tiktokBtn{
+    width:100%;
+    margin-top:15px;
+    padding:12px;
+    border:none;
+    border-radius:12px;
+    background:#ff0050;
+    color:white;
+    font-size:18px;
+    cursor:pointer;
+}
+
+.info{
+    margin-top:15px;
+}
+
+</style>
+</head>
+<body>
+
+<h1>🎰 Matan Spin 🎰</h1>
+
+<div id="winner"></div>
+
+<div class="main">
+
+<div class="panel">
+
+<h3>הגדרות</h3>
+
+<label>שמות (שם בכל שורה)</label>
+
+<textarea id="names">מתן
+דניאל
+נועה
+יובל
+איתי</textarea>
+
+<br><br>
+
+<label>זמן סיבוב (שניות)</label>
+
+<input type="number" id="spinTime" value="5" min="1" max="30">
+
+<br><br>
+
+<label>צבע רקע 1</label>
+<input type="color" id="color1" value="#000428">
+
+<br><br>
+
+<label>צבע רקע 2</label>
+<input type="color" id="color2" value="#004e92">
+
+<br><br>
+
+<label>תמונה למרכז הגלגל</label>
+<input type="file" id="centerImage" accept="image/*">
+
+<br><br>
+
+<label>תמונת רקע</label>
+<input type="file" id="backgroundImage" accept="image/*">
+
+<button
+class="tiktokBtn"
+onclick="window.open('https://www.tiktok.com/@matanos69?_r=1&_t=ZS-96qmLAYyYsi','_blank')">
+📱 טיקטוק
+</button>
+
+</div>
+
+<div class="wheel-area">
+
+<div class="wheel-wrapper">
+
+<canvas
+id="wheel"
+width="550"
+height="550">
+</canvas>
+
+<div id="pointer">◀</div>
+
+</div>
+
+<div class="info">
+לחץ על הגלגל כדי לסובב
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+const canvas=document.getElementById("wheel");
+const ctx=canvas.getContext("2d");
+
+let angle=0;
+let spinning=false;
+let centerImg=null;
+
+const CENTER=275;
+const RADIUS=240;
+
+const colors=[
+"#ff4d4d",
+"#ff9900",
+"#ffd700",
+"#00cc66",
+"#00ccff",
+"#3366ff",
+"#9933ff",
+"#ff33cc",
+"#00ffaa",
+"#ff6666",
+"#66ccff",
+"#cc66ff"
+];
+
+function getNames(){
+
+return document
+.getElementById("names")
+.value
+.split("\n")
+.map(x=>x.trim())
+.filter(x=>x);
+
+}
+
+function drawWheel(){
+
+const names=getNames();
+
+ctx.clearRect(
+0,
+0,
+canvas.width,
+canvas.height
+);
+
+if(!names.length) return;
+
+const arc=(Math.PI*2)/names.length;
+
+for(let i=0;i<names.length;i++){
+
+ctx.beginPath();
+
+ctx.moveTo(
+CENTER,
+CENTER
+);
+
+ctx.fillStyle=
+colors[i%colors.length];
+
+ctx.arc(
+CENTER,
+CENTER,
+RADIUS,
+i*arc,
+(i+1)*arc
+);
+
+ctx.fill();
+
+ctx.save();
+
+ctx.translate(
+CENTER,
+CENTER
+);
+
+ctx.rotate(
+i*arc+arc/2
+);
+
+ctx.fillStyle="white";
+
+ctx.font=
+"bold 20px Arial";
+
+ctx.textAlign=
+"right";
+
+ctx.fillText(
+names[i],
+210,
+7
+);
+
+ctx.restore();
+}
+
+ctx.beginPath();
+
+ctx.arc(
+CENTER,
+CENTER,
+50,
+0,
+Math.PI*2
+);
+
+ctx.fillStyle=
+"white";
+
+ctx.fill();
+
+if(centerImg){
+
+ctx.save();
+
+ctx.beginPath();
+
+ctx.arc(
+CENTER,
+CENTER,
+50,
+0,
+Math.PI*2
+);
+
+ctx.clip();
+
+ctx.drawImage(
+centerImg,
+225,
+225,
+100,
+100
+);
+
+ctx.restore();
+}
+
+}function spin(){
+
+if(spinning) return;
+
+const names=getNames();
+
+if(names.length<2){
+
+alert("צריך לפחות שני שמות");
+return;
+
+}
+
+spinning=true;
+
+document
+.getElementById("winner")
+.innerHTML="";
+
+const seconds=Number(
+document
+.getElementById("spinTime")
+.value
+);
+
+const extraRotation=
+Math.floor(Math.random()*360)
++1800;
+
+angle+=extraRotation;
+
+canvas.style.transition=
+`transform ${seconds}s cubic-bezier(0.15,0.85,0.15,1)`;
+
+canvas.style.transform=
+`rotate(${angle}deg)`;
+
+setTimeout(()=>{
+
+const arc=
+360/names.length;
+
+const normalized=
+((angle%360)+360)%360;
+
+/* חץ בצד ימין */
+const pointerAngle=
+(360-normalized)%360;
+
+const winnerIndex=
+Math.floor(
+pointerAngle/arc
+)%names.length;
+
+const winner=
+names[winnerIndex];
+
+document
+.getElementById("winner")
+.innerHTML=
+"🏆 הזוכה: "+winner;
+
+spinning=false;
+
+},seconds*1000);
+
+}
+
+function updateBackground(){
+
+const c1=
+document
+.getElementById("color1")
+.value;
+
+const c2=
+document
+.getElementById("color2")
+.value;
+
+document.body.style.backgroundImage=
+`linear-gradient(135deg,${c1},${c2})`;
+
+}
+
+function saveSettings(){
+
+localStorage.setItem(
+"names",
+document.getElementById("names").value
+);
+
+localStorage.setItem(
+"spinTime",
+document.getElementById("spinTime").value
+);
+
+localStorage.setItem(
+"color1",
+document.getElementById("color1").value
+);
+
+localStorage.setItem(
+"color2",
+document.getElementById("color2").value
+);
+
+}
+
+function loadSettings(){
+
+if(localStorage.getItem("names"))
+document.getElementById("names").value=
+localStorage.getItem("names");
+
+if(localStorage.getItem("spinTime"))
+document.getElementById("spinTime").value=
+localStorage.getItem("spinTime");
+
+if(localStorage.getItem("color1"))
+document.getElementById("color1").value=
+localStorage.getItem("color1");
+
+if(localStorage.getItem("color2"))
+document.getElementById("color2").value=
+localStorage.getItem("color2");
+
+}
+
+document
+.getElementById("centerImage")
+.addEventListener(
+"change",
+function(e){
+
+const file=e.target.files[0];
+
+if(!file) return;
+
+const reader=
+new FileReader();
+
+reader.onload=
+function(ev){
+
+centerImg=
+new Image();
+
+centerImg.onload=
+drawWheel;
+
+centerImg.src=
+ev.target.result;
+
+};
+
+reader.readAsDataURL(file);
+
+}
+);
+
+document
+.getElementById("backgroundImage")
+.addEventListener(
+"change",
+function(e){
+
+const file=e.target.files[0];
+
+if(!file) return;
+
+const reader=
+new FileReader();
+
+reader.onload=
+function(ev){
+
+document.body.style.backgroundImage=
+`url('${ev.target.result}')`;
+
+document.body.style.backgroundSize=
+"cover";
+
+document.body.style.backgroundPosition=
+"center";
+
+};
+
+reader.readAsDataURL(file);
+
+}
+);
+
+document
+.getElementById("color1")
+.addEventListener(
+"input",
+()=>{
+updateBackground();
+saveSettings();
+}
+);
+
+document
+.getElementById("color2")
+.addEventListener(
+"input",
+()=>{
+updateBackground();
+saveSettings();
+}
+);
+
+document
+.getElementById("names")
+.addEventListener(
+"input",
+()=>{
+drawWheel();
+saveSettings();
+}
+);
+
+document
+.getElementById("spinTime")
+.addEventListener(
+"input",
+saveSettings
+);
+
+canvas.addEventListener(
+"click",
+spin
+);
+
+loadSettings();
+drawWheel();
+updateBackground();
+
+</script>
+
+</body>
+</html>
