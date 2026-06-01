@@ -1,0 +1,137 @@
+<button class="mainBtn" onclick="start()">
+🎡 לגשת לגלגל
+</button>
+
+<button class="mainBtn"
+onclick="window.open('https://www.tiktok.com/@matanos69?_r=1&_t=ZS-96qmLAYyYsi','_blank')">
+📱 טיקטוק
+</button>
+ctx.font="bold 26px Arial";
+body{
+min-height:100vh;
+overflow-x:hidden;
+text-align:center;
+color:white;
+background:
+radial-gradient(circle at top,#2a2a72,#000),
+linear-gradient(135deg,#000428,#004e92);
+}
+#logo{
+font-size:70px;
+margin-top:20px;
+background:linear-gradient(90deg,#00ffff,#ff00ff);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+
+text-shadow:
+0 0 10px #00ffff,
+0 0 20px #00ffff,
+0 0 30px #ff00ff,
+0 0 40px #ff00ff;
+}
+function playCasinoSound(){
+
+if(!audioCtx) return;
+
+for(let i=0;i<25;i++){
+
+setTimeout(()=>{
+
+let osc=
+audioCtx.createOscillator();
+
+let gain=
+audioCtx.createGain();
+
+osc.type="square";
+
+osc.frequency.value=
+800-(i*20);
+
+gain.gain.value=0.03;
+
+osc.connect(gain);
+gain.connect(audioCtx.destination);
+
+osc.start();
+
+osc.stop(audioCtx.currentTime+0.05);
+
+},i*80);
+
+}
+}
+  function confetti(){
+
+const canvas=
+document.getElementById("confetti");
+
+const ctx=
+canvas.getContext("2d");
+
+canvas.width=
+window.innerWidth;
+
+canvas.height=
+window.innerHeight;
+
+let pieces=[];
+
+for(let i=0;i<100;i++){
+
+pieces.push({
+
+x:Math.random()*canvas.width,
+
+y:-20,
+
+size:Math.random()*8+4,
+
+speed:Math.random()*4+2
+
+});
+
+}
+
+let frame=0;
+
+function animate(){
+
+ctx.clearRect(
+0,
+0,
+canvas.width,
+canvas.height
+);
+
+pieces.forEach(p=>{
+
+p.y+=p.speed;
+
+ctx.fillRect(
+p.x,
+p.y,
+p.size,
+p.size
+);
+
+});
+
+frame++;
+  document.getElementById("winner").innerHTML=
+"🏆 הזוכה: "+winner;
+  confetti();
+  #wheel{
+width:320px;
+height:320px;
+border-radius:50%;
+margin:auto;
+border:6px solid gold;
+
+box-shadow:
+0 0 20px gold,
+0 0 40px orange,
+0 0 60px gold;
+}
+  document.getElementById("winner").innerHTML=
+"🏆 הזוכה: "+winner;
