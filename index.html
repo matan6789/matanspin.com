@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>COLOR DICE ISRAEL</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+overflow:hidden;
+background:#000;
+position:relative;
+}
+
+body::before{
+content:"";
+position:fixed;
+inset:0;
+background:
+radial-gradient(circle, white 1px, transparent 1px);
+background-size:40px 40px;
+animation:starsMove 20s linear infinite;
+opacity:.8;
+}
+
+body::after{
+content:"";
+position:fixed;
+inset:0;
+background:
+radial-gradient(circle at 20% 30%, rgba(255,255,255,.8) 2px, transparent 3px),
+radial-gradient(circle at 70% 20%, rgba(255,255,255,.8) 2px, transparent 3px),
+radial-gradient(circle at 40% 80%, rgba(255,255,255,.8) 2px, transparent 3px),
+radial-gradient(circle at 90% 60%, rgba(255,255,255,.8) 2px, transparent 3px);
+animation:twinkle 2s infinite alternate;
+}
+
+@keyframes starsMove{
+from{transform:translateY(0);}
+to{transform:translateY(40px);}
+}
+
+@keyframes twinkle{
+from{opacity:.3;}
+to{opacity:1;}
+}
+
+.container{
+position:relative;
+z-index:10;
+width:95%;
+max-width:900px;
+background:rgba(20,20,20,.9);
+border-radius:25px;
+padding:25px;
+text-align:center;
+color:white;
+box-shadow:0 0 40px rgba(0,0,0,.5);
+}
+
+h1{
+font-size:42px;
+margin-bottom:20px;
+}
+
+#dice{
+width:220px;
+height:220px;
+margin:auto;
+border-radius:25px;
+background:white;
+border:8px solid white;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:80px;
+font-weight:bold;
+color:black;
+}
+
+.result{
+margin-top:20px;
+font-size:35px;
+font-weight:bold;
+}
+
+.rollBtn{
+margin-top:25px;
+width:120px;
+height:120px;
+border:none;
+border-radius:50%;
+cursor:pointer;
+font-size:60px;
+}
+
+.history{
+margin-top:30px;
+background:#111;
+padding:15px;
+border-radius:12px;
+}
+
+#historyList{
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:5px;
+max-height:250px;
+overflow-y:auto;
+}
+
+#colorPicker{
+position:fixed;
+right:10px;
+bottom:10px;
+background:rgba(0,0,0,.5);
+padding:8px;
+border-radius:10px;
+font-size:12px;
+opacity:.5;
+z-index:999;
+color:white;
+}
+
+#colorPicker:hover{
+opacity:1;
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<h1>🎲 COLOR DICE ISRAEL</h1>
+
+<div id="dice">?</div>
+
+<div class="result" id="result">
+לחץ על 🎲
+</div>
+
+<button class="rollBtn" onclick="rollDice()">
+🎲
+</button>
+
+<div class="history">
+<h2>📊 היסטוריה</h2>
+<div id="historyList"></div>
+</div>
+
+</div>
+<div id="colorPicker">
+
+<h4>צבעים פעילים</h4>
+
+<label><input type="checkbox" checked value="red"> 🔴 אדום</label><br>
+<label><input type="checkbox" checked value="blue"> 🔵 כחול</label><br>
+<label><input type="checkbox" checked value="green"> 🟢 ירוק</label><br>
+<label><input type="checkbox" checked value="yellow"> 🟡 צהוב</label><br>
+<label><input type="checkbox" checked value="purple"> 🟣 סגול</label><br>
+<label><input type="checkbox" checked value="orange"> 🟠 כתום</label>
+
+</div>
+
+<audio id="winSound">
+<source src="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3">
+</audio>
+
+<script>
+
+const colors = [
+{name:"🔴 אדום",color:"red",emoji:"🔴"},
+{name:"🔵 כחול",color:"blue",emoji:"🔵"},
+{name:"🟢 ירוק",color:"green",emoji:"🟢"},
+{name:"🟡 צהוב",color:"yellow",emoji:"🟡"},
+{name:"🟣 סגול",color:"purple",emoji:"🟣"},
+{name:"🟠 כתום",color:"orange",emoji:"🟠"}
+];
+
+let rolling = false;
+
+function rollDice(){
+
+if(rolling) return;
+
+rolling = true;
+
+const result =
+document.getElementById("result");
+
+const dice =
+document.getElementById("dice");
+
+const enabledColors =
+colors.filter(c=>{
+
+const checkbox =
+document.querySelector(
+`input[value="${c.color}"]`
+);
+
+return checkbox.checked;
+
+});
+
+if(enabledColors.length===0){
+
+alert("בחר לפחות צבע אחד");
+
+rolling = false;
+
+return;
+}
+
+let countdown = 3;
+
+result.innerHTML = countdown;
+
+const timer = setInterval(()=>{
+
+countdown--;
+
+if(countdown > 0){
+
+result.innerHTML = countdown;
+
+}else{
+
+clearInterval(timer);
+
+const winner =
+enabledColors[
+Math.floor(
+Math.random() *
+enabledColors.length
+)
+];
+
+dice.style.background =
+winner.color;
+
+dice.innerHTML =
+winner.emoji;
+  result.innerHTML =
+"🏆 " + winner.name;
+
+document
+.getElementById("winSound")
+.play();
+
+addHistory(
+winner.name
+);
+
+rolling = false;
+
+}
+
+},1000);
+
+}
+
+function addHistory(colorName){
+
+const history =
+document.getElementById(
+"historyList"
+);
+
+const item =
+document.createElement(
+"div"
+);
+
+item.style.padding = "4px";
+item.style.fontSize = "18px";
+
+item.innerHTML =
+colorName;
+
+history.appendChild(item);
+
+}
+
+document.addEventListener(
+"keydown",
+(e)=>{
+
+if(e.code==="Space"){
+
+e.preventDefault();
+
+rollDice();
+
+}
+
+}
+);
+
+window.onload = ()=>{
+
+document
+.getElementById("dice")
+.style.background =
+"white";
+
+};
+
+</script>
+
+</body>
+</html>
