@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matan Spin</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+<div class="background"></div>
+
+<header>
+
+<div class="logo">
+Matan Spin
+</div>
+
+</header>
+
+<div class="container">
+
+<div class="wheelSide">
+
+<div id="pointer"></div>
+
+<div class="wheelContainer">
+
+<canvas id="wheel" width="700" height="700"></canvas>
+
+<div id="spinText">
+Tap to Spin
+</div>
+
+<div id="centerCircle"></div>
+
+</div>
+
+</div>
+
+<div class="menu">
+
+<h2>Entries</h2>
+
+<div class="buttons">
+
+<button id="shuffleBtn">
+🔀 Shuffle
+</button>
+
+<button id="sortBtn">
+🔤 Sort
+</button>
+
+</div>
+
+<textarea
+id="names"
+placeholder="One name per line"
+>
+
+Matan
+Chat
+
+</textarea>
+
+<div class="buttons2">
+
+<button id="spinBtn">
+🎡 Spin
+</button>
+
+<button id="clearBtn">
+🗑 Clear
+</button>
+
+</div>
+
+<div class="settings">
+
+<h3>Settings</h3>
+
+<label>
+
+Spin Time
+
+<input
+type="range"
+id="timeSlider"
+min="3"
+max="20"
+value="8">
+
+</label>
+
+<label>
+
+Sound
+
+<input
+type="checkbox"
+id="sound"
+checked>
+
+</label>
+
+<label>
+
+Confetti
+
+<input
+type="checkbox"
+id="confetti"
+checked>
+
+</label>
+
+</div>
+
+</div>
+
+</div>
+
+<div id="winnerPopup">
+
+<div class="popup">
+
+<h1>🏆</h1>
+
+<h2 id="winnerName">
+
+Winner
+
+</h2>
+
+<button id="closePopup">
+
+Close
+
+</button>
+
+</div>
+
+</div>
+
+<audio id="tick">
+<source src="tick.mp3">
+</audio>
+
+<audio id="win">
+<source src="win.mp3">
+</audio>
+
+<script src="script.js"></script>
+
+</body>
+</html> 
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+background:#0b0b15;
+overflow:hidden;
+color:white;
+}
+
+.background{
+position:fixed;
+left:0;
+top:0;
+width:100%;
+height:100%;
+background:
+radial-gradient(circle at center,#1d2450 0%,#0d1023 45%,#050507 100%);
+z-index:-1;
+}
+
+header{
+height:60px;
+display:flex;
+align-items:center;
+padding:0 20px;
+background:#141414;
+border-bottom:1px solid #2f2f2f;
+}
+
+.logo{
+font-size:28px;
+font-weight:bold;
+color:white;
+}
+
+.container{
+display:flex;
+height:calc(100vh - 60px);
+}
+
+.wheelSide{
+flex:1;
+display:flex;
+justify-content:center;
+align-items:center;
+position:relative;
+}
+
+.wheelContainer{
+position:relative;
+width:700px;
+height:700px;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+#wheel{
+border-radius:50%;
+box-shadow:
+0 0 60px rgba(0,0,0,.6),
+0 0 25px rgba(255,255,255,.15);
+cursor:pointer;
+transition:.2s;
+}
+
+#wheel:hover{
+transform:scale(1.01);
+}
+
+#pointer{
+position:absolute;
+right:40px;
+top:50%;
+transform:translateY(-50%);
+width:0;
+height:0;
+border-top:22px solid transparent;
+border-bottom:22px solid transparent;
+border-left:42px solid #4b7dff;
+filter:drop-shadow(0 0 10px #4b7dff);
+z-index:5;
+}
+
+#centerCircle{
+position:absolute;
+width:95px;
+height:95px;
+background:white;
+border-radius:50%;
+box-shadow:0 0 20px rgba(255,255,255,.5);
+}
+
+#spinText{
+position:absolute;
+top:115px;
+font-size:48px;
+font-weight:bold;
+text-shadow:0 0 15px black;
+pointer-events:none;
+}
+
+.menu{
+width:340px;
+background:#171717;
+padding:18px;
+border-left:1px solid #2b2b2b;
+display:flex;
+flex-direction:column;
+gap:15px;
+}
+
+.menu h2{
+font-size:24px;
+}
+
+.buttons,
+.buttons2{
+display:flex;
+gap:10px;
+}
+
+button{
+flex:1;
+padding:12px;
+border:none;
+border-radius:8px;
+background:#3d72ff;
+color:white;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
+transition:.2s;
+}
+
+button:hover{
+background:#5885ff;
+}
+textarea{
+width:100%;
+height:260px;
+background:#101010;
+color:white;
+border:1px solid #333;
+border-radius:8px;
+padding:12px;
+resize:none;
+font-size:16px;
+outline:none;
+}
+
+textarea:focus{
+border-color:#4b7dff;
+box-shadow:0 0 12px rgba(75,125,255,.5);
+}
+
+.settings{
+margin-top:10px;
+display:flex;
+flex-direction:column;
+gap:16px;
+}
+
+.settings h3{
+font-size:20px;
+margin-bottom:5px;
+}
+
+.settings label{
+display:flex;
+justify-content:space-between;
+align-items:center;
+font-size:16px;
+}
+
+input[type=range]{
+width:130px;
+}
+
+input[type=checkbox]{
+transform:scale(1.3);
+cursor:pointer;
+}
+
+#winnerPopup{
+position:fixed;
+left:0;
+top:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.75);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:999;
+}
+
+.popup{
+background:#1b1b1b;
+padding:35px;
+border-radius:16px;
+text-align:center;
+min-width:320px;
+box-shadow:0 0 40px rgba(0,0,0,.6);
+animation:popup .25s ease;
+}
+
+@keyframes popup{
+from{
+transform:scale(.7);
+opacity:0;
+}
+to{
+transform:scale(1);
+opacity:1;
+}
+}
+
+.popup h1{
+font-size:70px;
+margin-bottom:15px;
+}
+
+.popup h2{
+font-size:34px;
+margin-bottom:20px;
+}
+
+.popup button{
+width:100%;
+}
+
+@media(max-width:1100px){
+
+.container{
+flex-direction:column;
+overflow:auto;
+}
+
+.menu{
+width:100%;
+border-left:none;
+border-top:1px solid #333;
+}
+
+.wheelContainer{
+width:90vw;
+height:90vw;
+max-width:650px;
+max-height:650px;
+}
+
+#wheel{
+width:100%;
+height:100%;
+}
+
+#pointer{
+right:10px;
+}
+
+#spinText{
+font-size:36px;
+}
+
+}
