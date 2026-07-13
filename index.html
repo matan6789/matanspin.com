@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>COLOR DICE</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<h1>COLOR DICE</h1>
+
+
+<div class="container">
+
+
+    <div class="dice-box" id="diceBox">
+        <div class="dice">
+            🎲
+        </div>
+    </div>
+
+
+    <button id="roll">
+        🎲 Roll
+    </button>
+
+
+    <div class="choose">
+
+        <h2>בחר צבעים</h2>
+
+
+        <label>
+            <input type="checkbox" value="red" checked>
+            🔴 אדום
+        </label>
+
+
+        <label>
+            <input type="checkbox" value="blue" checked>
+            🔵 כחול
+        </label>
+
+
+        <label>
+            <input type="checkbox" value="green" checked>
+            🟢 ירוק
+        </label>
+
+
+        <label>
+            <input type="checkbox" value="yellow" checked>
+            🟡 צהוב
+        </label>
+
+
+        <label>
+            <input type="checkbox" value="orange" checked>
+            🟠 כתום
+        </label>
+
+
+        <label>
+            <input type="checkbox" value="purple" checked>
+            🟣 סגול
+        </label>
+
+
+    </div>
+
+
+</div>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
+* {
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+
+body {
+
+    margin: 0;
+    min-height: 100vh;
+
+    background:
+    radial-gradient(circle, #444 1px, transparent 1px),
+    linear-gradient(135deg,#050505,#202060);
+
+    background-size: 25px 25px, cover;
+
+    color: white;
+
+    text-align: center;
+
+}
+
+
+
+h1 {
+
+    margin-top: 30px;
+
+    font-size: 60px;
+
+    font-weight: 900;
+
+    background: linear-gradient(90deg,#00ffff,#ff00ff,#ffff00);
+
+    -webkit-background-clip: text;
+
+    color: transparent;
+
+    text-shadow: 0 0 20px #00ffff;
+
+}
+
+
+
+.container {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+}
+
+
+
+.dice-box {
+
+    margin-top: 40px;
+
+    height: 100px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+}
+
+
+
+.dice {
+
+    width: 60px;
+
+    height: 60px;
+
+    background: white;
+
+    color: black;
+
+    border-radius: 15px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    font-size: 25px;
+
+    font-weight: bold;
+
+    transition: 0.15s;
+
+}
+
+
+
+
+button {
+
+    margin: 20px;
+
+    padding: 12px 40px;
+
+    border: none;
+
+    border-radius: 20px;
+
+    font-size: 22px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    background: linear-gradient(45deg,#00ff99,#00ccff);
+
+}
+
+
+
+button:hover {
+
+    transform: scale(1.05);
+
+}
+
+
+
+
+.choose {
+
+    margin-top: 20px;
+
+    background: rgba(0,0,0,0.5);
+
+    padding: 20px;
+
+    border-radius: 20px;
+
+}
+
+
+
+.choose h2 {
+
+    margin-top: 0;
+
+}
+
+
+
+.choose label {
+
+    display: block;
+
+    margin: 10px;
+
+    font-size: 18px;
+
+}
+const roll = document.getElementById("roll");
+const dice = document.querySelector(".dice");
+
+
+roll.onclick = () => {
+
+    let colors = [];
+
+
+    document.querySelectorAll(".choose input:checked")
+    .forEach(item => {
+        colors.push(item.value);
+    });
+
+
+    if(colors.length === 0){
+        alert("תבחר צבעים");
+        return;
+    }
+
+
+    let tries = 0;
+
+
+    let animation = setInterval(()=>{
+
+
+        let random = colors[
+            Math.floor(Math.random() * colors.length)
+        ];
+
+
+        dice.style.background = random;
+
+        tries++;
+
+
+        if(tries >= 6){
+
+            clearInterval(animation);
+
+
+            let result = colors[
+                Math.floor(Math.random() * colors.length)
+            ];
+
+
+            dice.style.background = result;
+
+            dice.innerHTML = getEmoji(result);
+
+        }
+
+
+    },40);
+
+
+};
+
+
+
+
+function getEmoji(color){
+
+    if(color === "red") return "🔴";
+    if(color === "blue") return "🔵";
+    if(color === "green") return "🟢";
+    if(color === "yellow") return "🟡";
+    if(color === "orange") return "🟠";
+    if(color === "purple") return "🟣";
+
+    return "🎲";
+}
