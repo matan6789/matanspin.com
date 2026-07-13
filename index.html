@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+<meta charset="UTF-8">
+<title>Click Box</title>
+
+<style>
+body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #222;
+}
+
+.box {
+  width: 200px;
+  height: 200px;
+  background: black;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0;
+  transition: 0.3s;
+}
+
+.box:hover {
+  transform: scale(1.05);
+}
+
+.box.show {
+  font-size: 100px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="box" onclick="showFinger(this)">
+</div>
+
+<script>
+function showFinger(box) {
+  box.classList.toggle("show");
+  box.innerHTML = "🖕";
+}
+</script>
+
+</body>
+</html>
