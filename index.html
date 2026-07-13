@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎲 Dice Roll</title>
+
+<style>
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:linear-gradient(135deg,#0f172a,#1e3a8a);
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+color:white;
+}
+
+.box{
+text-align:center;
+background:rgba(255,255,255,.1);
+padding:40px;
+border-radius:20px;
+backdrop-filter:blur(10px);
+box-shadow:0 0 30px rgba(0,0,0,.4);
+}
+
+#dice{
+font-size:120px;
+transition:.3s;
+}
+
+.roll{
+animation:spin .5s linear infinite;
+}
+
+@keyframes spin{
+0%{transform:rotate(0deg);}
+100%{transform:rotate(360deg);}
+}
+
+button{
+margin-top:20px;
+padding:15px 40px;
+font-size:20px;
+border:none;
+border-radius:12px;
+background:#00d4ff;
+color:white;
+cursor:pointer;
+}
+
+button:hover{
+transform:scale(1.05);
+}
+
+#result{
+margin-top:20px;
+font-size:28px;
+font-weight:bold;
+}
+</style>
+
+</head>
+<body>
+
+<div class="box">
+<h1>🎲 קובייה</h1>
+
+<div id="dice">🎲</div>
+
+<button onclick="rollDice()">גלגל</button>
+
+<div id="result">לחץ כדי להתחיל</div>
+
+</div>
+
+<script>
+
+function rollDice(){
+
+const dice=document.getElementById("dice");
+const result=document.getElementById("result");
+
+dice.classList.add("roll");
+result.innerHTML="מגלגל...";
+
+setTimeout(()=>{
+
+dice.classList.remove("roll");
+
+let num=Math.floor(Math.random()*6)+1;
+
+const emojis={
+1:"⚀",
+2:"⚁",
+3:"⚂",
+4:"⚃",
+5:"⚄",
+6:"⚅"
+};
+
+dice.innerHTML=emojis[num];
+result.innerHTML="יצא: "+num;
+
+},1500);
+
+}
+
+</script>
+
+</body>
+</html>
