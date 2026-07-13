@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>אל תלחץ</title>
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #222;
+    font-family: Arial;
+    direction: rtl;
+}
+
+.box {
+    background: black;
+    padding: 50px;
+    border-radius: 25px;
+}
+
+button {
+    padding: 25px 50px;
+    font-size: 30px;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+#clown {
+    display: none;
+    font-size: 200px;
+    animation: pop 0.5s;
+}
+
+@keyframes pop {
+    from {
+        transform: scale(0);
+    }
+    to {
+        transform: scale(1);
+    }
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="box" id="box">
+    <button onclick="clickMe()">
+        אל תלחץ
+    </button>
+</div>
+
+<div id="clown">
+    🤡
+</div>
+
+<script>
+
+let clicks = 0;
+
+function clickMe(){
+
+    clicks++;
+
+    if(clicks == 1){
+        alert("אתה בטוח שאתה רוצה ללחוץ?");
+    }
+
+    else if(clicks == 2){
+        alert("רגע... אתה באמת בטוח?");
+    }
+
+    else if(clicks == 3){
+        alert("אין דרך חזרה 😈");
+        document.getElementById("box").style.display="none";
+        document.getElementById("clown").style.display="block";
+    }
+
+}
+
+</script>
+
+</body>
+</html>
