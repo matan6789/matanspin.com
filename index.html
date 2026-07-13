@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+<meta charset="UTF-8">
+<title>אל תלחץ</title>
+
+<style>
+body {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #222;
+    direction: rtl;
+    font-family: Arial;
+}
+
+.outer {
+    background: black;
+    padding: 40px;
+    border-radius: 20px;
+}
+
+.inner {
+    padding: 20px 40px;
+    font-size: 25px;
+    cursor: pointer;
+    border-radius: 15px;
+}
+
+img {
+    display: none;
+    width: 300px;
+    border-radius: 20px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="outer">
+    <button class="inner" onclick="press(event)">
+        אל תלחץ
+    </button>
+</div>
+
+<img id="photo" src="daniel.png">
+
+<script>
+let count = 0;
+
+function press(e) {
+    e.stopPropagation();
+
+    count++;
+
+    if(count == 1) {
+        alert("אתה בטוח שלחצת?");
+    }
+
+    if(count == 2) {
+        document.querySelector(".outer").style.display = "none";
+        document.getElementById("photo").style.display = "block";
+    }
+}
+</script>
+
+</body>
+</html>
