@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+<meta charset="UTF-8">
+<title>מטוס</title>
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    overflow: hidden;
+    background: linear-gradient(#5cc7ff, #fff);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial;
+    direction: rtl;
+}
+
+#plane {
+    position: absolute;
+    font-size: 80px;
+    cursor: pointer;
+    left: -100px;
+    animation: fly 5s linear infinite;
+}
+
+@keyframes fly {
+    from {
+        left: -100px;
+    }
+    to {
+        left: 110%;
+    }
+}
+
+.crash {
+    animation: crash 1s forwards !important;
+}
+
+@keyframes crash {
+    0% {
+        transform: scale(1) rotate(0deg);
+    }
+    100% {
+        left: 50%;
+        top: 50%;
+        transform: scale(3) rotate(90deg);
+    }
+}
+
+#boom {
+    display: none;
+    font-size: 150px;
+}
+
+#text {
+    display: none;
+    position: absolute;
+    font-size: 50px;
+    font-weight: bold;
+    color: red;
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="plane" onclick="hitPlane()">✈️</div>
+
+<div id="boom">💥</div>
+
+<div id="text">
+סתום תפה שך וורקר
+</div>
+
+
+<script>
+
+let clicked = false;
+
+function hitPlane(){
+
+    if(clicked) return;
+
+    clicked = true;
+
+    let plane = document.getElementById("plane");
+
+    plane.classList.add("crash");
+
+    setTimeout(()=>{
+
+        plane.style.display="none";
+        document.getElementById("boom").style.display="block";
+
+    },1000);
+
+
+    setTimeout(()=>{
+
+        document.getElementById("boom").style.display="none";
+        document.getElementById("text").style.display="block";
+
+    },2500);
+
+}
+
+</script>
+
+</body>
+</html>
