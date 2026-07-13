@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>COLOR DICE</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<h1>COLOR DICE</h1>
+
+<p class="subtitle">
+בחירה רנדומלית לחלוטין 🎲
+</p>
+
+</header>
+
+
+
+<div class="main">
+
+
+<!-- אזור המשחק -->
+
+<div class="game">
+
+
+<div id="diceContainer" class="dice-container">
+
+<div class="dice">
+🎲
+</div>
+
+</div>
+
+
+
+<button id="rollBtn">
+🎲 Roll
+</button>
+
+
+</div>
+
+
+
+
+<!-- הגדרות בצד -->
+
+<div class="settings">
+
+
+<h2>
+⚙️ הגדרות
+</h2>
+
+
+<div class="setting-box">
+
+
+<h3>
+מספר קוביות
+</h3>
+
+
+<select id="diceAmount">
+
+<option value="1">1</option>
+
+<option value="2">2</option>
+
+<option value="3">3</option>
+
+<option value="4">4</option>
+
+<option value="5">5</option>
+
+<option value="6">6</option>
+
+</select>
+
+
+</div>
+
+
+
+
+<div class="setting-box">
+
+
+<h3>
+בחירת צבעים
+</h3>
+
+
+<label>
+<input type="checkbox" value="red" checked>
+🔴 אדום
+</label>
+
+
+<label>
+<input type="checkbox" value="blue" checked>
+🔵 כחול
+</label>
+
+
+<label>
+<input type="checkbox" value="green" checked>
+🟢 ירוק
+</label>
+
+
+<label>
+<input type="checkbox" value="yellow" checked>
+🟡 צהוב
+</label>
+
+
+<label>
+<input type="checkbox" value="orange" checked>
+🟠 כתום
+</label>
+
+
+<label>
+<input type="checkbox" value="purple" checked>
+🟣 סגול
+</label>
+
+
+</div>
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+<!-- הסבר -->
+
+<div class="info">
+
+
+<h2>
+🔒 איך זה עובד?
+</h2>
+
+
+<p>
+
+COLOR DICE משתמש בבחירה רנדומלית לחלוטין.
+<br>
+
+אין אפשרות לבחור תוצאה מראש ואין רמאויות.
+<br>
+
+כל צבע שנבחר מקבל סיכוי שווה לצאת.
+
+</p>
+
+
+</div>
+
+
+
+
+<!-- פרימיום -->
+
+<div class="premium">
+
+
+<h2>
+⭐ COLOR DICE PREMIUM
+</h2>
+
+
+<p>
+אפשרות להוסיף תמונת רקע משלך
+</p>
+
+
+<input 
+type="file" 
+id="backgroundUpload"
+accept="image/*">
+
+
+</div>
+
+
+
+
+<script src="script.js"></script>
+
+
+</body>
+
+</html>
+* {
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+
+body {
+
+    margin:0;
+    min-height:100vh;
+
+    background:
+    radial-gradient(circle,#444 1px,transparent 1px),
+    linear-gradient(135deg,#050505,#151550);
+
+    background-size:25px 25px, cover;
+
+    color:white;
+}
+
+
+/* כותרת */
+
+header {
+
+    text-align:center;
+    padding:25px;
+
+}
+
+
+h1 {
+
+    margin:0;
+
+    font-size:65px;
+
+    font-weight:900;
+
+    background:linear-gradient(90deg,#00ffff,#ff00ff,#ffff00);
+
+    -webkit-background-clip:text;
+
+    color:transparent;
+
+    text-shadow:0 0 25px #00ffff;
+
+}
+
+
+.subtitle {
+
+    font-size:20px;
+
+    opacity:0.8;
+
+}
+
+
+
+
+/* מבנה */
+
+.main {
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:40px;
+
+    padding:20px;
+
+}
+
+
+
+/* משחק */
+
+.game {
+
+    text-align:center;
+
+    min-width:400px;
+
+}
+
+
+
+.dice-container {
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:12px;
+
+    min-height:90px;
+
+    align-items:center;
+
+}
+
+
+
+.dice {
+
+    width:55px;
+
+    height:55px;
+
+    background:white;
+
+    color:black;
+
+    border-radius:12px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:25px;
+
+    font-weight:bold;
+
+    transition:0.1s;
+
+}
+
+
+
+
+/* כפתור */
+
+button {
+
+    margin-top:25px;
+
+    padding:12px 45px;
+
+    border:none;
+
+    border-radius:20px;
+
+    background:linear-gradient(45deg,#00ff99,#00ccff);
+
+    font-size:22px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+}
+
+
+
+button:hover {
+
+    transform:scale(1.05);
+
+}
+
+
+
+
+/* הגדרות */
+
+.settings {
+
+    width:270px;
+
+    background:rgba(0,0,0,0.6);
+
+    padding:20px;
+
+    border-radius:25px;
+
+    box-shadow:0 0 20px #00ffff;
+
+}
+
+
+
+.settings h2 {
+
+    text-align:center;
+
+}
+
+
+
+.setting-box {
+
+    margin-top:20px;
+
+    padding:10px;
+
+    background:rgba(255,255,255,0.08);
+
+    border-radius:15px;
+
+}
+
+
+
+.setting-box h3 {
+
+    margin-top:0;
+
+}
+
+
+
+label {
+
+    display:block;
+
+    margin:10px;
+
+    font-size:18px;
+
+}
+
+
+
+select {
+
+    width:100%;
+
+    padding:8px;
+
+    border-radius:10px;
+
+}
+
+
+
+
+/* הסבר */
+
+.info {
+
+    width:80%;
+
+    margin:20px auto;
+
+    text-align:center;
+
+    background:rgba(0,0,0,0.5);
+
+    padding:20px;
+
+    border-radius:20px;
+
+}
+
+
+
+
+/* פרימיום */
+
+.premium {
+
+    width:80%;
+
+    margin:20px auto 40px;
+
+    text-align:center;
+
+    background:rgba(255,215,0,0.15);
+
+    padding:20px;
+
+    border-radius:20px;
+
+    border:1px solid gold;
+
+}
+
+
+
+.premium h2 {
+
+    color:#ffd700;
+
+}
+const rollBtn = document.getElementById("rollBtn");
+const diceContainer = document.getElementById("diceContainer");
+const diceAmount = document.getElementById("diceAmount");
+
+
+
+function getSelectedColors(){
+
+    let colors = [];
+
+    document.querySelectorAll(
+        ".setting-box input[type='checkbox']:checked"
+    ).forEach(item => {
+
+        colors.push(item.value);
+
+    });
+
+
+    return colors;
+
+}
+
+
+
+
+function createDice(){
+
+    diceContainer.innerHTML = "";
+
+
+    let amount = Number(diceAmount.value);
+
+
+    for(let i = 0; i < amount; i++){
+
+        let dice = document.createElement("div");
+
+        dice.className = "dice";
+
+        dice.innerHTML = "🎲";
+
+        diceContainer.appendChild(dice);
+
+    }
+
+}
+
+
+
+diceAmount.addEventListener("change",()=>{
+
+    createDice();
+
+});
+
+
+
+createDice();
+
+
+
+
+
+rollBtn.onclick = () => {
+
+
+    let colors = getSelectedColors();
+
+
+
+    if(colors.length === 0){
+
+        return;
+
+    }
+
+
+
+    let dices = document.querySelectorAll(".dice");
+
+
+
+    dices.forEach(dice => {
+
+
+        let start = Date.now();
+
+
+
+        let animation = setInterval(()=>{
+
+
+            let randomColor =
+            colors[
+                Math.floor(Math.random()*colors.length)
+            ];
+
+
+
+            dice.style.background = randomColor;
+
+            dice.innerHTML = "🎲";
+
+
+
+            if(Date.now() - start >= 300){ 
+                // 0.30 שניות
+
+
+                clearInterval(animation);
+
+
+
+                let finalColor =
+                colors[
+                    Math.floor(Math.random()*colors.length)
+                ];
+
+
+
+                dice.style.background = finalColor;
+
+                dice.innerHTML =
+                getColorEmoji(finalColor);
+
+
+            }
+
+
+
+        },30);
+
+
+
+    });
+
+
+
+};
+
+
+
+
+
+function getColorEmoji(color){
+
+
+    switch(color){
+
+
+        case "red":
+            return "🔴";
+
+
+        case "blue":
+            return "🔵";
+
+
+        case "green":
+            return "🟢";
+
+
+        case "yellow":
+            return "🟡";
+
+
+        case "orange":
+            return "🟠";
+
+
+        case "purple":
+            return "🟣";
+
+
+        default:
+            return "🎲";
+
+    }
+
+}
+      // שמירת מספר הקוביות
+
+const savedAmount = localStorage.getItem("diceAmount");
+
+if(savedAmount){
+
+    diceAmount.value = savedAmount;
+
+    createDice();
+
+}
+
+
+diceAmount.addEventListener("change",()=>{
+
+    localStorage.setItem(
+        "diceAmount",
+        diceAmount.value
+    );
+
+});
+
+
+
+
+// שמירת צבעים שנבחרו
+
+const colorInputs = document.querySelectorAll(
+    ".setting-box input[type='checkbox']"
+);
+
+
+
+colorInputs.forEach(input=>{
+
+
+    let saved =
+    localStorage.getItem(
+        "color_" + input.value
+    );
+
+
+
+    if(saved !== null){
+
+        input.checked = saved === "true";
+
+    }
+
+
+
+    input.addEventListener(
+        "change",
+        ()=>{
+
+
+            localStorage.setItem(
+
+                "color_" + input.value,
+
+                input.checked
+
+            );
+
+
+        }
+    );
+
+
+});
+
+
+
+
+
+// אפקט קטן בזמן גלגול
+
+rollBtn.addEventListener("click",()=>{
+
+
+    rollBtn.style.transform="scale(0.9)";
+
+
+    setTimeout(()=>{
+
+        rollBtn.style.transform="scale(1)";
+
+    },100);
+
+
+});
+      // COLOR DICE PREMIUM
+// שינוי רקע עם תמונה
+
+
+const backgroundUpload = document.getElementById(
+    "backgroundUpload"
+);
+
+
+
+const savedBackground =
+localStorage.getItem("diceBackground");
+
+
+
+if(savedBackground){
+
+    document.body.style.backgroundImage =
+    `url(${savedBackground})`;
+
+    document.body.style.backgroundSize =
+    "cover";
+
+    document.body.style.backgroundPosition =
+    "center";
+
+}
+
+
+
+
+
+backgroundUpload.addEventListener(
+"change",
+function(){
+
+
+    const file = this.files[0];
+
+
+    if(!file){
+        return;
+    }
+
+
+
+    const reader = new FileReader();
+
+
+
+    reader.onload = function(e){
+
+
+        document.body.style.backgroundImage =
+        `url(${e.target.result})`;
+
+
+        document.body.style.backgroundSize =
+        "cover";
+
+
+        document.body.style.backgroundPosition =
+        "center";
+
+
+
+        localStorage.setItem(
+
+            "diceBackground",
+
+            e.target.result
+
+        );
+
+
+    };
+
+
+
+    reader.readAsDataURL(file);
+
+
+
+});
