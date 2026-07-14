@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Kido Color Dice</title>
+
+<style>
+
+body {
+    margin:0;
+    height:100vh;
+    background:#111;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-family:Arial;
+}
+
+.container {
+    text-align:center;
+}
+
+h1 {
+    color:white;
+    font-size:42px;
+    margin-bottom:30px;
+}
+
+.board {
+    width:350px;
+    min-height:150px;
+    background:#222;
+    border-radius:25px;
+    padding:25px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+.dice {
+    width:70px;
+    height:70px;
+    border-radius:15px;
+}
+
+select, button {
+
+    margin:15px;
+    padding:12px 25px;
+    border-radius:15px;
+    border:none;
+    font-size:18px;
+    cursor:pointer;
+
+}
+
+button {
+    background:white;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+<h1>🤍 Kido Color Dice 🤍</h1>
+
+
+<div class="board" id="diceBox"></div>
+
+
+<select id="amount">
+
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+<option value="6">6</option>
+
+</select>
+
+
+<br>
+
+
+<button onclick="roll()">🎲 Roll</button>
+
+
+</div>
+
+
+
+<audio id="sound">
+
+<source src="roll.mp3" type="audio/mpeg">
+
+</audio>
+
+
+
+<script>
+
+
+const colors=[
+
+"#ff0000",
+"#0066ff",
+"#00cc44",
+"#ffff00",
+"#ff8800",
+"#9900ff"
+
+];
+
+
+
+function roll(){
+
+
+let sound=document.getElementById("sound");
+
+sound.currentTime=0;
+
+sound.play();
+
+
+
+let box=document.getElementById("diceBox");
+
+let amount=document.getElementById("amount").value;
+
+
+
+box.innerHTML="";
+
+
+
+setTimeout(()=>{
+
+
+for(let i=0;i<amount;i++){
+
+
+let dice=document.createElement("div");
+
+
+dice.className="dice";
+
+
+dice.style.background =
+colors[Math.floor(Math.random()*colors.length)];
+
+
+
+box.appendChild(dice);
+
+
+}
+
+
+},500);
+
+
+
+}
+
+
+</script>
+
+
+</body>
+</html>
