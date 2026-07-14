@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Color Dice</title>
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #111;
+    font-family: Arial;
+    color: white;
+}
+
+.box {
+    text-align: center;
+}
+
+.dice {
+    width: 180px;
+    height: 180px;
+    border-radius: 25px;
+    background: white;
+    margin: 20px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+button {
+    padding: 15px 40px;
+    border: none;
+    border-radius: 15px;
+    font-size: 25px;
+    cursor: pointer;
+    background: white;
+}
+
+button:hover {
+    transform: scale(1.05);
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+
+<div class="dice" id="dice">
+?
+</div>
+
+<button onclick="roll()">🎲 Roll</button>
+
+</div>
+
+
+<audio id="sound">
+<source src="roll.mp3" type="audio/mpeg">
+</audio>
+
+
+<script>
+
+const colors = [
+    {name:"Red", color:"#ff0000"},
+    {name:"Blue", color:"#0066ff"},
+    {name:"Green", color:"#00cc44"},
+    {name:"Yellow", color:"#ffff00"},
+    {name:"Orange", color:"#ff8800"},
+    {name:"Purple", color:"#9900ff"}
+];
+
+
+function roll(){
+
+    let sound = document.getElementById("sound");
+    sound.currentTime = 0;
+    sound.play();
+
+    let dice = document.getElementById("dice");
+
+    let random = colors[Math.floor(Math.random()*colors.length)];
+
+    dice.style.background = random.color;
+    dice.innerHTML = random.name;
+
+}
+
+</script>
+
+</body>
+</html>
