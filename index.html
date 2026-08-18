@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>קובייה מדברת</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #111827;
+      color: white;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 420px;
+      padding: 25px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 32px;
+      margin-bottom: 35px;
+    }
+
+    .dice {
+      width: 150px;
+      height: 150px;
+      margin: 0 auto 35px;
+      background: white;
+      color: #111827;
+      border-radius: 25px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 90px;
+      font-weight: bold;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+      transition: transform 0.15s;
+    }
+
+    .rolling {
+      animation: roll 0.8s linear infinite;
+    }
+
+    @keyframes roll {
+      0% {
+        transform: rotate(0deg) scale(1);
+      }
+
+      25% {
+        transform: rotate(90deg) scale(1.1);
+      }
+
+      50% {
+        transform: rotate(180deg) scale(0.9);
+      }
+
+      75% {
+        transform: rotate(270deg) scale(1.1);
+      }
+
+      100% {
+        transform: rotate(360deg) scale(1);
+      }
+    }
+
+    button {
+      width: 100%;
+      padding: 18px;
+      border: none;
+      border-radius: 15px;
+      background: #2563eb;
+      color: white;
+      font-size: 22px;
+      font-weight: bold;
+      cursor: pointer;
+    }button:active {
+      transform: scale(0.96);
+    }
+
+    button:disabled {
+      opacity: 0.5;
+    }
+
+    #result {
+      margin-top: 25px;
+      font-size: 25px;
+      min-height: 35px;
+    }
+
+    .voice {
+      margin-top: 15px;
+      font-size: 14px;
+      opacity: 0.7;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="app">
+
+    <h1>🎲 קובייה מדברת</h1>
+
+    <div id="dice" class="dice">
+      ⚀
+    </div>
+
+    <button id="rollButton">
+      🎲 זרוק קובייה
+    </button>
+
+    <div id="result"></div>
+
+    <div class="voice">
+      🔊 הקובייה תדבר בעברית
+    </div>
+
+  </div>
+
+  <script>
+
+    const dice = document.getElementById("dice");
+    const button = document.getElementById("rollButton");
+    const result = document.getElementById("result");
+
+    const diceFaces = [
+      "⚀",
+      "⚁",
+      "⚂",
+      "⚃",
+      "⚄",
+      "⚅"
+    ];
+
+    const hebrewNumbers = {
+      1: "אחת",
+      2: "שתיים",
+      3: "שלוש",
+      4: "ארבע",
+      5: "חמש",
+      6: "שש"
+    };
+
+    button.addEventListener("click", rollDice);
+
+    function rollDice() {
+
+      button.disabled = true;
+
+      result.textContent = "";
+
+      dice.classList.add("rolling");
+
+      window.speechSynthesis.cancel();
+
+      setTimeout(() => {
+
+        const number = Math.floor(Math.random() * 6) + 1;
+
+        dice.classList.remove("rolling");
+
+        dice.textContent = diceFaces[number - 1];
+
+        result.textContent =
+          "יצא לך " + hebrewNumbers[number] + "!"; 
+                 speakHebrew(
+          "יצא לך " + hebrewNumbers[number]
+        );
+
+        button.disabled = false;
+
+      }, 1000);
+    }
+
+    function speakHebrew(text) {
+
+      if (!("speechSynthesis" in window)) {
+        alert("הדפדפן שלך לא תומך בהקראה קולית.");
+        return;
+      }
+
+      const speech = new SpeechSynthesisUtterance(text);
+
+      speech.lang = "he-IL";
+      speech.rate = 0.9;
+      speech.pitch = 1;
+      speech.volume = 1;
+
+      speechSynthesis.speak(speech);
+    }
+
+  </script>
+
+</body>
+</html>
